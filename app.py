@@ -3,7 +3,7 @@ import os
 from boto.s3.connection import S3Connection
 from flask import Flask, jsonify, request, abort
 import json
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, desc
 s3 = S3Connection(os.environ['DATABASE_URL'], os.environ['SECRET'])
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
@@ -15,7 +15,7 @@ port = int(os.environ.get('PORT', 33507))
 def scores():
     token = request.headers.get('secret')
     if token == secret:
-        return jsonify(data=[i.serialize for i in models.Scores.query.all().order_by('score desc')])
+        return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
     else: abort(404)
 
 @app.route('/', methods=['POST'])
