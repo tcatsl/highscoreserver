@@ -10,6 +10,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 import models
 secret = os.environ['SECRET']
+port = int(os.environ.get('PORT', 33507))
 @app.route('/', methods=['GET'])
 def scores():
     token = request.headers.get('secret')
@@ -31,4 +32,4 @@ def post_scores():
 
 if __name__ == '__main__':
     app.debug = True
-    app.run()
+    app.run(host='0.0.0.0', port=port)
