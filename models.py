@@ -12,7 +12,7 @@ class Scores(db.Model):
     name = db.Column(db.String)
     score = db.Column(db.Integer)
 
-    def __init__(self, name, score):
+    def __init__(self, name=None, score=None):
         self.name = name
         self.score = score
 
