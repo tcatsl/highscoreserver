@@ -6,7 +6,7 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 s3 = S3Connection(os.environ['DATABASE_URL'], os.environ['SECRET'])
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ(['DATABASE_URL'])
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 import models
 secret = os.environ(['secret'])
