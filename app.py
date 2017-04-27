@@ -1,4 +1,5 @@
 #dependencies
+import os
 from boto.s3.connection import S3Connection
 from flask import Flask, jsonify, request, abort
 import json
