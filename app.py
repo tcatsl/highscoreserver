@@ -12,7 +12,7 @@ def scores():
     token = request.headers.get('secret')
     if token == secret:
         return jsonify(data=[i.serialize for i in models.Scores.query.all().order_by('score desc')])
-    else return abort(404)
+    else: abort(404)
 
 @app.route('/', methods=['POST'])
 def post_scores():
@@ -23,7 +23,7 @@ def post_scores():
         db.session.add(new_score)
         db.session.commit()
         return jsonify(data=[i.serialize for i in models.Scores.query.all().order_by('score desc')])
-    else return abort(404)
+    else: abort(404)
 
 
 if __name__ == '__main__':
