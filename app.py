@@ -24,7 +24,7 @@ def post_scores():
     if token == secret:
         score_obj = json.JSONDecoder(request.data)
 
-        db.session.add(Scores(name=score_obj.name, score=score_obj.score))
+        db.session.add(Scores(name=score_obj['name'], score=score_obj['score']))
         db.session.commit()
         return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
     else: abort(404)
