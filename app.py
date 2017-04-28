@@ -15,7 +15,7 @@ port = int(os.environ.get('PORT', 33507))
 @app.route('/', methods=['GET'])
 def scores():
 
-    
+
     token = request.headers.get(header)
     if token == secret:
         return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
@@ -23,7 +23,7 @@ def scores():
 
 @app.route('/', methods=['POST'])
 def post_scores():
-    token = request.headers.get('secret')
+    token = request.headers.get(header)
     if token == secret:
         score_obj = json.loads(request.data)
 
