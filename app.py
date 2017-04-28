@@ -4,13 +4,12 @@ from boto.s3.connection import S3Connection
 from flask import Flask, jsonify, request, abort
 import json
 from flask_sqlalchemy import SQLAlchemy
-s3 = S3Connection(os.environ['DATABASE_URL'], os.environ['SECRET'], os.environ['HEADERSTRING'])
+s3 = S3Connection(os.environ['DATABASE_URL'], os.environ['SECRET'])
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 import models
 secret = os.environ['SECRET']
-header_thing = os.environ['HEADERSTRING']
 port = int(os.environ.get('PORT', 33507))
 @app.route('/', methods=['GET'])
 def scores():
