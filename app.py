@@ -10,20 +10,20 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 import models
 secret = os.environ['SECRET']
-header = os.environ['HEADER']
+header_thing = os.environ['HEADER']
 port = int(os.environ.get('PORT', 33507))
 @app.route('/', methods=['GET'])
 def scores():
 
 
-    token = request.headers.get(header)
+    token = request.headers.get(header_thing)
     if token == secret:
         return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
     else: abort(404)
 
 @app.route('/', methods=['POST'])
 def post_scores():
-    token = request.headers.get(header)
+    token = request.headers.get(header_thing)
     if token == secret:
         score_obj = json.loads(request.data)
 
