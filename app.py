@@ -16,7 +16,7 @@ port = int(os.environ.get('PORT', 33507))
 def scores():
 
 
-    token = request.headers.get(header)
+    token = request.headers.get('ajjdfbfusgsbfijikaplanefngaudsfiam')
     if token == secret:
         return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
     else: abort(404)
