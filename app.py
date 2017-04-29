@@ -11,6 +11,11 @@ db = SQLAlchemy(app)
 import models
 secret = os.environ['SECRET']
 port = int(os.environ.get('PORT', 33507))
+
+@app.route('/latest', methods=['GET'])
+def latest():
+    return jsonify(data=models.Version.query.orderby('version desc').first().serialize)
+
 @app.route('/', methods=['GET'])
 def scores():
 

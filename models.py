@@ -18,3 +18,19 @@ class Scores(db.Model):
 
     def __repr__(self):
         return '<Scores %r>' % self.score
+
+class Version(db.Model):
+    @property
+    def serialize(self):
+        return {
+            'version' : self.version
+        }
+
+    id = db.Column(db.Integer, primary_key=True)
+    version = db.Column(db.Integer)
+
+    def __init__(self, version=None):
+        self.version = version
+
+    def __repr__(self):
+        return '<Version %r>' % self.version
