@@ -1,4 +1,4 @@
-from models import Scores
+from models import Scores, Version
 from app import db
 
 scores = Scores('tcats', 666)
