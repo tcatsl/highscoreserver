@@ -47,7 +47,8 @@ def post_scores():
     try:
         payload = jwt.decode(
             token,
-            auth_key
+            auth_key,
+            audience: 'aud:YsIZfSDkbOYRuIDFuH64NhRywmQpz1kJ'
         )
     except jwt.ExpiredSignature:
         abort(408)
