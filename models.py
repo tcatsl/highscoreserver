@@ -3,12 +3,15 @@ import datetime
 from sqlalchemy import Column, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
-class Scores(db.Model):
+class Scores(db.Model, extend_existing=True):
     @property
     def serialize(self):
         return {
             'score' : self.score,
-            'name': self.name
+            'name': self.name,
+            'difficulty': self.difficulty,
+            'kills': self.kills,
+            'created_date': self.created_date
         }
 
     id = db.Column(db.Integer, primary_key=True)
@@ -17,7 +20,6 @@ class Scores(db.Model):
     difficulty = db.Column(db.Integer)
     kills = db.Column(db.Integer)
     created_date = Column(DateTime, default=datetime.datetime.utcnow)
-    extend_existing = True
     def __init__(self, name=None, score=None, kills=None, difficulty=None):
         self.name = name
         self.score = score
