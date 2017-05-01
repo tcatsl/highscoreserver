@@ -1,7 +1,9 @@
 #dependencies
 import os
+from flask_cors import CORS, cross_origin
+import jwt
 from boto.s3.connection import S3Connection
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, redirect, session
 import json
 from flask_sqlalchemy import SQLAlchemy
 s3 = S3Connection(os.environ['DATABASE_URL'], os.environ['SECRET'])
@@ -10,7 +12,43 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 import models
 secret = os.environ['SECRET']
+auth_key = os.environ['AUTH0']
 port = int(os.environ.get('PORT', 33507))
+
+def auth_required(f):
+
+    def wrap(request, *args, **kwargs):
+        auth = request.META.get('HTTP_AUTHORIZATION', None)
+
+        if not auth:
+            abort(404)
+
+        parts = auth.split()
+
+        if parts[0].lower() != 'bearer':
+            abort(404)
+        elif len(parts) == 1:
+            abort(404)
+        elif len(parts) > 2:
+            abort(404)
+        token = parts[1]
+        try:
+            payload = jwt.decode(
+                token,
+                auth_key)
+            )
+        except jwt.ExpiredSignature:
+            return jsonify({'code': 'token_expired', 'description': 'token is expired'})
+        except jwt.DecodeError:
+            return jsonify({'code': 'token_invalid_signature', 'description': 'token signature is invalid'})
+
+
+        return f(request, *args, **kwargs)
+
+    wrap.__doc__=f.__doc__
+    wrap.__name__=f.__name__
+
+    return wrap
 
 @app.route('/latest', methods=['GET'])
 def latest():
@@ -18,23 +56,14 @@ def latest():
 
 @app.route('/', methods=['GET'])
 def scores():
-
-
-    token = request.headers.get('iusdhfihaisfjhaof')
-    if token == secret:
-        return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
-    else: abort(404)
+    return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
 
 @app.route('/', methods=['POST'])
+@auth_required
 def post_scores():
-    token = request.headers.get('iusdhfihaisfjhaof')
-    if token == secret:
-        score_obj = json.loads(request.data)
-
-        db.session.add(models.Scores(score_obj['name'], score_obj['score']))
-        db.session.commit()
-        return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
-    else: abort(404)
+    db.session.add(models.Scores(score_obj['name'], score_obj['score']))
+    db.session.commit()
+    return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
 
 
 if __name__ == '__main__':
