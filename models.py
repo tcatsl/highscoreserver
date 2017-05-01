@@ -32,6 +32,7 @@ class Scores(db.Model):
         return '<Scores %r>' % self.score
 
 class Version(db.Model):
+    __table_args__ = {'extend_existing': True}
     @property
     def serialize(self):
         return {
