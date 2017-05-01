@@ -18,7 +18,7 @@ port = int(os.environ.get('PORT', 33507))
 CORS(app)
 
 def auth_required(f):
-    @wraps(f):
+    @wraps(f)
     def wrappper(request, *args, **kwargs):
         auth = request.META.get('HTTP_AUTHORIZATION', None)
         print('Calling decorated function')
