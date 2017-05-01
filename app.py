@@ -7,11 +7,13 @@ from boto.s3.connection import S3Connection
 from flask import Flask, jsonify, request, abort, redirect, session
 import json
 from flask_sqlalchemy import SQLAlchemy
+
 s3 = S3Connection(os.environ['DATABASE_URL'], os.environ['AUTH0'])
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 import models
+
 secret = os.environ['SECRET']
 auth_key = os.environ['AUTH0']
 port = int(os.environ.get('PORT', 33507))
