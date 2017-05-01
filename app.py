@@ -56,9 +56,8 @@ def latest():
 @app.route('/', methods=['GET'])
 def scores():
     return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
-
-@app.route('/', methods=['POST'])
 @auth_required(request)
+@app.route('/', methods=['POST'])
 def post_scores():
     score_obj = json.loads(request.data)
     db.session.add(models.Scores(score_obj['name'], score_obj['score']))
