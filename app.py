@@ -61,7 +61,7 @@ def post_scores():
     db.session.commit()
     return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
 @app.route('/user', methods=['POST'])
-def post_scores():
+def post_user():
     the_payload = get_auth()
     user_obj = json.loads(request.data)
     db.session.add(models.Users(user_obj['user_name'], the_payload['email']))
