@@ -64,7 +64,7 @@ def post_scores():
 def post_user():
     the_payload = get_auth()
     user_obj = json.loads(request.data)
-    db.session.add(users.Users(user_obj['user_name'], the_payload['email']))
+    db.session.add(users.App_users(user_obj['user_name'], the_payload['email']))
     db.session.commit()
     return 201
 

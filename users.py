@@ -1,6 +1,6 @@
 from app import db
 
-class Users(db.Model):
+class App_users(db.Model):
     @property
     def serialize(self):
         return {
@@ -17,4 +17,4 @@ class Users(db.Model):
         self.email = email
 
     def __repr__(self):
-        return '<Users %r>' % self.user_name
+        return '<App_users %r>' % self.user_name
