@@ -66,7 +66,7 @@ def post_user():
     user_obj = json.loads(request.data)
     db.session.add(models.Users(user_obj['user_name'], the_payload['email']))
     db.session.commit()
-    return 200
+    return 201
 
 if __name__ == '__main__':
     app.debug = True

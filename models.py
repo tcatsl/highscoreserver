@@ -34,7 +34,7 @@ class Version(db.Model):
 
     def __repr__(self):
         return '<Version %r>' % self.version
-class User(db.Model):
+class Users(db.Model):
     @property
     def serialize(self):
         return {
