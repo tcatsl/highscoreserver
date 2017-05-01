@@ -1,6 +1,6 @@
-from models import Scores, Version
+from models import Scores, Version, Users
 from app import db
 
-version = Version(2)
-db.session.add(version)
+user = Users("tcats", "thomas.castleman@gmail.com")
+db.session.add(user)
 db.session.commit()
