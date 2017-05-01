@@ -17,11 +17,20 @@ auth_key = os.environ['AUTH0']
 port = int(os.environ.get('PORT', 33507))
 CORS(app)
 
-def auth_required(f):
-    @wraps(f)
-    def wrappper(request, *args, **kwargs):
-        auth = request.META.get('HTTP_AUTHORIZATION', None)
-        print('Calling decorated function')
+
+
+@app.route('/latest', methods=['GET'])
+def latest():
+    return jsonify(data=models.Version.query.order_by('version desc').first().serialize)
+
+@app.route('/', methods=['GET'])
+def scores():
+    return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
+
+@app.route('/', methods=['POST'])
+def post_scores():
+    if hasattr(request, 'Authorization'):
+        auth = request.headers.get('Authorization')
         if not auth:
             abort(404)
 
@@ -43,26 +52,11 @@ def auth_required(f):
             abort(404)
         except jwt.DecodeError:
             abort(404)
-
-
-        return f(request, *args, **kwargs)
-
-    return wrapper
-
-@app.route('/latest', methods=['GET'])
-def latest():
-    return jsonify(data=models.Version.query.order_by('version desc').first().serialize)
-
-@app.route('/', methods=['GET'])
-def scores():
-    return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
-@auth_required(request)
-@app.route('/', methods=['POST'])
-def post_scores():
-    score_obj = json.loads(request.data)
-    db.session.add(models.Scores(score_obj['name'], score_obj['score']))
-    db.session.commit()
-    return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
+        score_obj = json.loads(request.data)
+        db.session.add(models.Scores(score_obj['name'], score_obj['score']))
+        db.session.commit()
+        return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
+    else: abort(404)
 
 
 if __name__ == '__main__':
