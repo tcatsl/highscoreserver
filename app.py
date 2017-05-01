@@ -1,5 +1,5 @@
 #dependencies
-from functools import wrap
+from functools import wraps
 import os
 from flask_cors import CORS, cross_origin
 import jwt
