@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 import models
-
+import users
 secret = os.environ['SECRET']
 auth_key = os.environ['AUTH0']
 port = int(os.environ.get('PORT', 33507))
@@ -64,7 +64,7 @@ def post_scores():
 def post_user():
     the_payload = get_auth()
     user_obj = json.loads(request.data)
-    db.session.add(models.Users(user_obj['user_name'], the_payload['email']))
+    db.session.add(users.Users(user_obj['user_name'], the_payload['email']))
     db.session.commit()
     return 201
 
