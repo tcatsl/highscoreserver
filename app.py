@@ -18,6 +18,7 @@ port = int(os.environ.get('PORT', 33507))
 CORS(app)
 def auth_required(f):
 
+
     def wrap(request, *args, **kwargs):
         auth = request.META.get('HTTP_AUTHORIZATION', None)
 
