@@ -1,4 +1,5 @@
 #dependencies
+from functools import wrap
 import os
 from flask_cors import CORS, cross_origin
 import jwt
@@ -6,7 +7,7 @@ from boto.s3.connection import S3Connection
 from flask import Flask, jsonify, request, abort, redirect, session
 import json
 from flask_sqlalchemy import SQLAlchemy
-s3 = S3Connection(os.environ['DATABASE_URL'], os.environ['SECRET'])
+s3 = S3Connection(os.environ['DATABASE_URL'], os.environ['AUTH0'])
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
@@ -38,9 +39,9 @@ def auth_required(f):
                 auth_key)
             )
         except jwt.ExpiredSignature:
-            return jsonify({'code': 'token_expired', 'description': 'token is expired'})
+            abort(404)
         except jwt.DecodeError:
-            return jsonify({'code': 'token_invalid_signature', 'description': 'token signature is invalid'})
+            abort(404)
 
 
         return f(request, *args, **kwargs)
