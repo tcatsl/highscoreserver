@@ -1,4 +1,7 @@
 from app import db
+import datetime
+from sqlalchemy import Column, Integer, DateTime
+from sqlalchemy.ext.declarative import declarative_base
 
 class Scores(db.Model):
     @property
@@ -11,10 +14,16 @@ class Scores(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     score = db.Column(db.Integer)
+    difficulty = db.Column(db.integer)
+    kills = db.Column(db.Integer)
+    created_date = Column(DateTime, default=datetime.datetime.utcnow)
 
-    def __init__(self, name=None, score=None):
+    def __init__(self, name=None, score=None, kills=None, difficulty=None, kills=None):
         self.name = name
         self.score = score
+        self.kills = kills
+        self.difficulty = difficulty
+
 
     def __repr__(self):
         return '<Scores %r>' % self.score
