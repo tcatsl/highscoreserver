@@ -14,7 +14,7 @@ class Scores(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     score = db.Column(db.Integer)
-    difficulty = db.Column(db.integer)
+    difficulty = db.Column(db.Integer)
     kills = db.Column(db.Integer)
     created_date = Column(DateTime, default=datetime.datetime.utcnow)
 
