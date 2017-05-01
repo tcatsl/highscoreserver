@@ -1,2 +1,2 @@
 from app import db
-db.create_all(checkfirst = true)
+db.create_all(checkfirst = True)
