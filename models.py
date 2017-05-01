@@ -3,7 +3,8 @@ import datetime
 from sqlalchemy import Column, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
-class Scores(db.Model, extend_existing=True):
+class Scores(db.Model):
+    __table_args__ = {'extend_existing': True}
     @property
     def serialize(self):
         return {
