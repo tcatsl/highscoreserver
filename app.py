@@ -36,7 +36,7 @@ def auth_required(f):
         try:
             payload = jwt.decode(
                 token,
-                auth_key)
+                auth_key
             )
         except jwt.ExpiredSignature:
             abort(404)
