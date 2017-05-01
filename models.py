@@ -34,6 +34,7 @@ class Version(db.Model):
 
     def __repr__(self):
         return '<Version %r>' % self.version
+
 class Users(db.Model):
     @property
     def serialize(self):
@@ -51,4 +52,4 @@ class Users(db.Model):
         self.email = email
 
     def __repr__(self):
-        return '<User %r>' % self.user_name
+        return '<Users %r>' % self.user_name
