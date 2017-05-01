@@ -54,8 +54,8 @@ def scores():
 
 @app.route('/', methods=['POST'])
 def post_scores():
-    print(the_payload)
     the_payload = get_auth()
+    print(the_payload)
     score_obj = json.loads(request.data)
     db.session.add(models.Scores(score_obj['name'], score_obj['score']))
     db.session.commit()
