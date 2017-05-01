@@ -19,7 +19,7 @@ CORS(app)
 
 def auth_required(f):
     @wraps(f):
-        def wrappper(request, *args, **kwargs):
+    def wrappper(request, *args, **kwargs):
         auth = request.META.get('HTTP_AUTHORIZATION', None)
         print('Calling decorated function')
         if not auth:
