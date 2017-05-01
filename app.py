@@ -29,34 +29,32 @@ def scores():
 
 @app.route('/', methods=['POST'])
 def post_scores():
-    if hasattr(request, 'Authorization'):
-        auth = request.headers.get('Authorization')
-        if not auth:
-            abort(403)
+    auth = request.headers.get('Authorization')
+    if not auth:
+        abort(403)
 
-        parts = auth.split()
+    parts = auth.split()
 
-        if parts[0].lower() != 'bearer':
-            abort(405)
-        elif len(parts) == 1:
-            abort(406)
-        elif len(parts) > 2:
-            abort(407)
-        token = parts[1]
-        try:
-            payload = jwt.decode(
-                token,
-                auth_key
-            )
-        except jwt.ExpiredSignature:
-            abort(408)
-        except jwt.DecodeError:
-            abort(409)
-        score_obj = json.loads(request.data)
-        db.session.add(models.Scores(score_obj['name'], score_obj['score']))
-        db.session.commit()
-        return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
-    else: abort(410)
+    if parts[0].lower() != 'bearer':
+        abort(405)
+    elif len(parts) == 1:
+        abort(406)
+    elif len(parts) > 2:
+        abort(407)
+    token = parts[1]
+    try:
+        payload = jwt.decode(
+            token,
+            auth_key
+        )
+    except jwt.ExpiredSignature:
+        abort(408)
+    except jwt.DecodeError:
+        abort(409)
+    score_obj = json.loads(request.data)
+    db.session.add(models.Scores(score_obj['name'], score_obj['score']))
+    db.session.commit()
+    return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
 
 
 if __name__ == '__main__':
