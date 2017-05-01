@@ -17,7 +17,7 @@ class Scores(db.Model):
     difficulty = db.Column(db.Integer)
     kills = db.Column(db.Integer)
     created_date = Column(DateTime, default=datetime.datetime.utcnow)
-
+    extend_existing = True
     def __init__(self, name=None, score=None, kills=None, difficulty=None):
         self.name = name
         self.score = score
