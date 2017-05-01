@@ -16,12 +16,12 @@ secret = os.environ['SECRET']
 auth_key = os.environ['AUTH0']
 port = int(os.environ.get('PORT', 33507))
 CORS(app)
+
 def auth_required(f):
-
-
-    def wrap(request, *args, **kwargs):
+    @wraps(f):
+        def wrappper(request, *args, **kwargs):
         auth = request.META.get('HTTP_AUTHORIZATION', None)
-
+        print('Calling decorated function')
         if not auth:
             abort(404)
 
@@ -47,10 +47,7 @@ def auth_required(f):
 
         return f(request, *args, **kwargs)
 
-    wrap.__doc__=f.__doc__
-    wrap.__name__=f.__name__
-
-    return wrap
+    return wrapper
 
 @app.route('/latest', methods=['GET'])
 def latest():
