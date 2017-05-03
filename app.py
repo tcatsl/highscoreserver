@@ -72,11 +72,11 @@ def is_user():
 @app.route('/newuser', methods=['POST'])
 def post_user():
     new_payload = get_auth()
-    user_str = request.data
+    user_str = json.loads(request.data)
     if (users.App_users.query.filter(users.App_users.email == new_payload['email']).count() > 0):
         return "Bad"
     else:
-        db.session.add(users.App_users(user_str, new_payload['email']))
+        db.session.add(users.App_users(user_str['user_name'], new_payload['email']))
         db.session.commit()
         return user_str
 
