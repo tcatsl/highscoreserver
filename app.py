@@ -76,9 +76,9 @@ def post_user():
     if (users.App_users.query.filter(users.App_users.email == new_payload['email']).count() > 0):
         return "Bad"
     else:
-        db.session.add(users.App_users(user_str.user_name, new_payload['email']))
+        db.session.add(users.App_users(user_str['user_name'], new_payload['email']))
         db.session.commit()
-        return user_str
+        return user_str['user_name']
 
 if __name__ == '__main__':
     app.debug = True
