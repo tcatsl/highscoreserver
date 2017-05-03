@@ -61,7 +61,7 @@ def post_scores():
     db.session.commit()
     return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
 
-@app.router('/is_user', methods=['GET'])
+@app.route('/is_user', methods=['GET'])
 def is_user():
     payload = get_auth()
     if (len(users.App_users.query("user_name").filter(users.App_users.email == payload['email'])) > 0):
