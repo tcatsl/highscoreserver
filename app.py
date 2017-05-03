@@ -73,7 +73,7 @@ def is_user():
 def post_user():
     new_payload = get_auth()
     user_str = request.data
-    if (users.App_users.query.filter(users.App_users.email == payload['email']).count() > 0):
+    if (users.App_users.query.filter(users.App_users.email == new_payload['email']).count() > 0):
         return "Bad"
     else:
         db.session.add(users.App_users(user_str, new_payload['email']))
