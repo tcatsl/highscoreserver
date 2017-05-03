@@ -65,7 +65,7 @@ def post_scores():
 def is_user():
     payload = get_auth()
     if (db.session.query(users.App_users).filter(users.App_users.email == payload['email']).count() > 0):
-        return db.session.query(users.App_users).filter(users.App_users.email == payload['email']).first()
+        return "db.session.query(users.App_users).filter(users.App_users.email == payload['email']).first()"
     else:
         return ""
 
