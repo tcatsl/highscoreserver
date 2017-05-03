@@ -44,11 +44,6 @@ def get_auth():
     except jwt.DecodeError:
         abort(404)
 
-@app.route('/loggedin', methods=['GET'])
-def logged_in():
-    get_auth()
-    return "logged in"
-    
 @app.route('/latest', methods=['GET'])
 def latest():
     return jsonify(data=models.Version.query.order_by('version desc').first().serialize)
@@ -62,16 +57,27 @@ def post_scores():
     the_payload = get_auth()
     print(the_payload)
     score_obj = json.loads(request.data)
-    db.session.add(models.Scores(score_obj['name'], score_obj['score'], score_obj['kills'], score_obj['difficulty']))
+    db.session.add(models.Scores(users.App_users.query("user_name").filter(users.App_users.user_name == the_payload['email']))[0], score_obj['score'], score_obj['kills'], score_obj['difficulty'], score_obj['duration']))
     db.session.commit()
     return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
-@app.route('/user', methods=['POST'])
+
+@app.router('/is_user', methods=['GET'])
+    payload = get_auth()
+    if (len(users.App_users.query("user_name").filter(users.App_users.email == payload['email'])) > 0):
+        return users.App_users.query("user_name").filter(users.App_users.user_name == payload['email']))[0]
+    else:
+        return ""
+
+@app.route('/newuser', methods=['POST'])
 def post_user():
-    the_payload = get_auth()
-    user_obj = json.loads(request.data)
-    db.session.add(users.App_users(user_obj['user_name'], the_payload['email']))
-    db.session.commit()
-    return 'created'
+    new_payload = get_auth()
+    user_str = request.data
+    if (len(users.App_users.query("user_name").filter(users.App_users.user_name == user_str)) > 0):
+        return "Bad"
+    else:
+        db.session.add(users.App_users(user_str, new_payload['email']))
+        db.session.commit()
+        return user_str
 
 if __name__ == '__main__':
     app.debug = True
