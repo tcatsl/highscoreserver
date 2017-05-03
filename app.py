@@ -44,6 +44,11 @@ def get_auth():
     except jwt.DecodeError:
         abort(404)
 
+@app.route('/loggedin', methods=['GET'])
+def logged_in():
+    get_auth()
+    return "logged in"
+    
 @app.route('/latest', methods=['GET'])
 def latest():
     return jsonify(data=models.Version.query.order_by('version desc').first().serialize)

@@ -12,7 +12,8 @@ class Scores(db.Model):
             'name': self.name,
             'difficulty': self.difficulty,
             'kills': self.kills,
-            'created_date': self.created_date
+            'created_date': self.created_date,
+            'duration': self.duration
         }
 
     id = db.Column(db.Integer, primary_key=True)
@@ -20,12 +21,14 @@ class Scores(db.Model):
     score = db.Column(db.Integer)
     difficulty = db.Column(db.Integer)
     kills = db.Column(db.Integer)
+    duration = db.Column(db.Integer)
     created_date = Column(DateTime, default=datetime.datetime.utcnow)
-    def __init__(self, name=None, score=None, kills=None, difficulty=None):
+    def __init__(self, name=None, score=None, kills=None, difficulty=None, duration=None):
         self.name = name
         self.score = score
         self.kills = kills
         self.difficulty = difficulty
+        self.duration = duration
 
 
     def __repr__(self):
