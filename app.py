@@ -65,7 +65,7 @@ def post_scores():
 def is_user():
     payload = get_auth()
     if (users.App_users.query.filter(users.App_users.email == payload['email']).count() > 0):
-        return users.App_users.query.filter(users.App_users.email == payload['email'])[0]
+        return users.App_users.query.filter(users.App_users.email == payload['email'])
     else:
         return ""
 
