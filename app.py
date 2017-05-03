@@ -57,15 +57,15 @@ def post_scores():
     the_payload = get_auth()
     print(the_payload)
     score_obj = json.loads(request.data)
-    db.session.add(models.Scores(db.session.query(users.App_users).filter(users.App_users.email == the_payload['email']).all())[0]['user_name'], score_obj['score'], score_obj['kills'], score_obj['difficulty'], score_obj['duration'])
+    db.session.add(models.Scores(users.App_users.query.filter(users.App_users.email == the_payload['email']).all())[0]['user_name'], score_obj['score'], score_obj['kills'], score_obj['difficulty'], score_obj['duration'])
     db.session.commit()
     return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
 
 @app.route('/is_user', methods=['GET'])
 def is_user():
     payload = get_auth()
-    if (db.session.query(users.App_users).filter(users.App_users.email == payload['email']).count() > 0):
-        return db.session.query(users.App_users).filter(users.App_users.email == payload['email'])
+    if (users.App_users.query.filter(users.App_users.email == payload['email']).count() > 0):
+        return users.App_users.query.filter(users.App_users.email == payload['email'])[0]
     else:
         return ""
 
@@ -73,7 +73,7 @@ def is_user():
 def post_user():
     new_payload = get_auth()
     user_str = request.data
-    if (db.session.query(users.App_users).filter(users.App_users.email == new_payload['email']).count() > 0):
+    if (users.App_users.query.filter(users.App_users.email == new_payload['email']).count() > 0):
         return "Bad"
     else:
         db.session.add(users.App_users(user_str, new_payload['email']))
