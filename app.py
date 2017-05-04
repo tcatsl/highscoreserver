@@ -56,7 +56,7 @@ def scores():
 def post_scores():
     the_payload = get_auth()
     print(the_payload)
-    score_obj = json.loads(request.data)
+    score_obj = json.loads(base64.decode(request.data))
     db.session.add(models.Scores(db.session.query(users.App_users).filter(users.App_users.email == the_payload['email']).first().user_name, score_obj['score'], score_obj['kills'], score_obj['difficulty'], score_obj['duration']))
     db.session.commit()
     return ""
@@ -72,7 +72,7 @@ def is_user():
 @app.route('/newuser', methods=['POST'])
 def post_user():
     new_payload = get_auth()import base64
-    user_str = json.loads(base64.decode(request.data))
+    user_str = json.loads(request.data)
     if (users.App_users.query.filter(users.App_users.user_name == user_str['user_name']).count() > 0):
         return "Bad"
     else:
