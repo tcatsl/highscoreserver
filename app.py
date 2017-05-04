@@ -50,7 +50,7 @@ def latest():
 
 @app.route('/', methods=['GET'])
 def scores():
-    return jsonify(data=[i.serialize for i in models.Scores.query.distinct().order_by('score desc').all()])
+    return jsonify(data=[i.serialize for i in models.Scores.query.distinct(models.Scores.name, models.Scores.score, models.Scores.difficulty).order_by('score desc').all()])
 
 @app.route('/', methods=['POST'])
 def post_scores():
