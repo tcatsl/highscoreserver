@@ -71,7 +71,7 @@ def is_user():
 
 @app.route('/newuser', methods=['POST'])
 def post_user():
-    new_payload = get_auth()import base64
+    new_payload = get_auth()
     user_str = json.loads(request.data)
     if (users.App_users.query.filter(users.App_users.user_name == user_str['user_name']).count() > 0):
         return "Bad"
