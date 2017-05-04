@@ -56,7 +56,7 @@ def scores():
 def post_scores():
     the_payload = get_auth()
     print(the_payload)
-    score_obj = json.loads(base64.decode(request.data))
+    score_obj = json.loads(request.data)
     db.session.add(models.Scores(db.session.query(users.App_users).filter(users.App_users.email == the_payload['email']).first().user_name, score_obj['score'], score_obj['kills'], score_obj['difficulty'], score_obj['duration']))
     db.session.commit()
     return ""
