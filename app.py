@@ -50,7 +50,7 @@ def latest():
 
 @app.route('/', methods=['GET'])
 def scores():
-    return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
+    return jsonify(data=[i.serialize for i in models.Scores.query.distinct(models.Scores.name).order_by('score desc').all()])
 
 @app.route('/', methods=['POST'])
 def post_scores():
@@ -59,7 +59,7 @@ def post_scores():
     score_obj = json.loads(request.data)
     db.session.add(models.Scores(db.session.query(users.App_users).filter(users.App_users.email == the_payload['email']).first().user_name, score_obj['score'], score_obj['kills'], score_obj['difficulty'], score_obj['duration']))
     db.session.commit()
-    return jsonify(data=[i.serialize for i in models.Scores.query.order_by('score desc').all()])
+    return ""
 
 @app.route('/is_user', methods=['GET'])
 def is_user():
@@ -71,8 +71,8 @@ def is_user():
 
 @app.route('/newuser', methods=['POST'])
 def post_user():
-    new_payload = get_auth()
-    user_str = json.loads(request.data)
+    new_payload = get_auth()import base64
+    user_str = json.loads(base64.decode(request.data))
     if (users.App_users.query.filter(users.App_users.user_name == user_str['user_name']).count() > 0):
         return "Bad"
     else:
