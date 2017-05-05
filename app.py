@@ -47,7 +47,10 @@ def get_auth():
 @app.route('/latest', methods=['GET'])
 def latest():
     return jsonify(data=models.Version.query.order_by('version desc').first().serialize)
-
+# @app.route('/my_stats', methods=['GET'])
+# def my_stats():
+#     get_auth()
+#     return jsonify(session.query(func.avg(Scores.filter(db.session.query(users.App_users).filter(users.App_users.email == the_payload['email'])).label('average'))
 @app.route('/', methods=['GET'])
 def scores():
     return jsonify(data=[i.serialize for i in models.Scores.query.distinct(models.Scores.name, models.Scores.score, models.Scores.difficulty, models.Scores.duration, models.Scores.kills).order_by('score desc').all()])
