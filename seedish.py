@@ -1,7 +1,7 @@
-from models import Scores
+from models import Scores, Version
+from users import App_users
 from app import db
 
-scores = Scores('tcats', 666)
-
-db.session.add(scores)
+user = App_users("tcats", "thomas.castleman@gmail.com")
+db.session.add(user)
 db.session.commit()
